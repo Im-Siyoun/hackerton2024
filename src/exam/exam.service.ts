@@ -53,6 +53,10 @@ export class ExamService {
   }
 
   async findOne(id: string): Promise<Exam> {
-    return this.ExamModel.findById(id).exec();
+    return await this.ExamModel.findById(id).exec();
+  }
+
+  async findAllBySubjectName(subjectName: string): Promise<Exam[]> {
+    return await this.ExamModel.find({ subject: subjectName });
   }
 }
