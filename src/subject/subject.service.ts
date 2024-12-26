@@ -32,7 +32,7 @@ export class SubjectService {
   }
 
   async findOne(id: string): Promise<Subject> {
-    const Subject = await this.SubjectModel.findOne({ id: id });
+    const Subject = await this.SubjectModel.findOne({ _id: id });
 
     return Subject;
   }

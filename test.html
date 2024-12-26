@@ -106,27 +106,40 @@
       });
 
       socket.on('fromCV', (data) => {
-        // data = { blob: 바이너리jpeg, candidateId: 사용자 고유 Id}
-        console.log(data);
-        if (candidates.indexOf(data.candidateId) == -1) {
-          candidates.push(data.candidateId);
-          const newRemoteStreamElem = document.createElement('image');
-          newRemoteStreamElem.className = data.candidateId;
-          newRemoteStreamElem.autoplay = true;
+        // ArrayBuffer를 Uint8Array로 변환
+        const uint8Array = new Uint8Array(data.data.blob);
+        // base64 문자열로 변환
+        const base64String = btoa(String.fromCharCode.apply(null, uint8Array));
+        const jpegDataUrl = `data:image/jpeg;base64,${base64String}`;
 
-          // image 요소를 DOM에 추가
-          document
-            .getElementById('remoteVideos')
-            .appendChild(newRemoteStreamElem);
+        if (candidates.indexOf(data.data.candidateId) === -1) {
+          // 새로운 사용자일 경우
+          candidates.push(data.data.candidateId);
+
+          const newImage = document.createElement('img');
+          newImage.setAttribute('id', `candidate-${data.data.candidateId}`); // id 속성으로 변경
+          newImage.style.width = '320px';
+          newImage.style.height = '240px';
+          newImage.style.margin = '10px';
+          newImage.style.border = '5px solid black';
+
+          // JPEG 데이터 직접 할당
+          newImage.src = jpegDataUrl;
+
+          document.getElementById('remoteVideos').appendChild(newImage);
         } else {
-          // 기존 사용자의 영상 업데이트
-          const existingVideo = document.querySelector(
-            `image.${data.candidateId}`,
+          // 기존 사용자의 이미지 업데이트
+          const existingImage = document.getElementById(
+            `candidate-${data.data.candidateId}`,
           );
-          if (existingVideo) {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(data.blob);
-            existingVideo.replaceWith(img);
+          console.log(data.data.alert)
+          if (existingImage) {
+            existingImage.src = jpegDataUrl;
+            if (data.data.alert === 1) {
+              existingImage.style.borderColor = 'RED';
+            } else {
+              existingImage.style.borderColor = 'BLACK';
+            }
           }
         }
       });
