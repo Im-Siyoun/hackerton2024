@@ -4,9 +4,11 @@ import { ExamController } from './exam.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Exam, ExamSchema } from './types/exam.model';
 import { CandidateModule } from 'src/candidate/candidate.module';
+import { SubjectModule } from 'src/subject/subject.module';
 
 @Module({
   imports: [
+    SubjectModule,
     CandidateModule,
     MongooseModule.forFeature([{ name: Exam.name, schema: ExamSchema }]),
   ],

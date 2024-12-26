@@ -31,18 +31,18 @@ export class ExamController {
     return ResponseDto.created('create_success', result);
   }
 
-  @Get('/:name')
-  @ApiOperation({ summary: '과목명으로 시험 조회하기 API' })
+  @Get('/:id')
+  @ApiOperation({ summary: '과목id로 시험 조회하기 API' })
   @ApiParam({
-    name: 'name',
+    name: 'id',
     type: String,
-    description: '시험의 과목명',
+    description: '시험의 uuid',
   })
   @ApiResponse({
     type: Array<Exam>,
   })
-  async getExam(@Param('name') name: string): Promise<any> {
-    const result = await this.examservice.findAllBySubjectName(name);
+  async getExam(@Param('id') id: string): Promise<any> {
+    const result = await this.examservice.findOneBySubjectId(id);
     return ResponseDto.success('inquiry_success', result);
   }
 

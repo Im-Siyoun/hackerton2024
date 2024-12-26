@@ -92,19 +92,6 @@
           console.error('Error accessing media devices.', error);
         });
 
-      // 메시지 전송 함수
-      function sendMessage() {
-        const message = messageInput.value;
-        socket.emit('chatMessage', { room: room, message: message });
-        chatArea.value += `Me: ${message}\n`;
-        messageInput.value = '';
-      }
-
-      // 서버로부터 메시지 수신
-      socket.on('chatMessage', (data) => {
-        chatArea.value += `${data.sender}: ${data.message}\n`;
-      });
-
       socket.on('fromCV', (data) => {
         // ArrayBuffer를 Uint8Array로 변환
         const uint8Array = new Uint8Array(data.data.blob);

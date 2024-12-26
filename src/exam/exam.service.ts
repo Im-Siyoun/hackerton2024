@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Exam } from './types/exam.model';
 import { CreateExamDto } from './types/create-exam.dto';
 import { CandidateService } from '../candidate/candidate.service';
+import { SubjectService } from 'src/subject/subject.service';
 
 @Injectable()
 export class ExamService {
   constructor(
     @InjectModel(Exam.name) private readonly ExamModel: Model<Exam>,
+    private readonly subjectservice: SubjectService,
     private readonly candidateservice: CandidateService,
   ) {}
 
@@ -43,7 +45,11 @@ export class ExamService {
     return await this.ExamModel.findById(id).exec();
   }
 
-  async findAllBySubjectName(subjectName: string): Promise<Exam[]> {
-    return await this.ExamModel.find({ subject: subjectName });
+  async findOneBySubjectId(id: string): Promise<Exam> {
+    const subject = await this.subjectservice.findOne(id);
+    if (!subject) {
+      throw new NotFoundException('없는 과목 id입니다.');
+    }
+    return await this.ExamModel.findOne({ subject: subject.subjectName });
   }
 }
