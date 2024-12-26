@@ -16,6 +16,5 @@ export class CreateResultDto {
     description: '시험을 마무리 한 후 생성된 응시 데이터',
   })
   @Expose({ name: 'result' })
-  @IsString()
   result: object;
 }
