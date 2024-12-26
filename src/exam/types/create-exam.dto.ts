@@ -23,15 +23,15 @@ export class CreateExamDto {
     description: '시험시작시간',
   })
   @Expose({ name: 'startTime' })
-  @IsDate()
-  startTime: Date;
+  @IsString()
+  startTime: string;
 
   @ApiProperty({
     description: '시험끝시간',
   })
   @Expose({ name: 'endTime' })
-  @IsDate()
-  endTime: Date;
+  @IsString()
+  endTime: string;
 
   @ApiProperty({
     description: 'OCR인증여부',
