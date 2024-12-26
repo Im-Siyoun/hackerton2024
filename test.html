@@ -110,20 +110,24 @@
         console.log(data);
         if (candidates.indexOf(data.candidateId) == -1) {
           candidates.push(data.candidateId);
-          const newRemoteStreamElem = document.createElement('video');
+          const newRemoteStreamElem = document.createElement('image');
           newRemoteStreamElem.className = data.candidateId;
           newRemoteStreamElem.autoplay = true;
 
-          // video 요소를 DOM에 추가
+          // image 요소를 DOM에 추가
           document
             .getElementById('remoteVideos')
             .appendChild(newRemoteStreamElem);
         } else {
           // 기존 사용자의 영상 업데이트
           const existingVideo = document.querySelector(
-            `video.${data.candidateId}`,
+            `image.${data.candidateId}`,
           );
-
+          if (existingVideo) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(data.blob);
+            existingVideo.replaceWith(img);
+          }
         }
       });
     </script>

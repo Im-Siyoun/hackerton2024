@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsBoolean, IsDate, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import mongoose from 'mongoose';
 
 export class CreateExamDto {
   @ApiProperty({
@@ -24,14 +25,14 @@ export class CreateExamDto {
   })
   @Expose({ name: 'startTime' })
   @IsString()
-  startTime: string;
+  startTime: mongoose.Schema.Types.Date;
 
   @ApiProperty({
     description: '시험끝시간',
   })
   @Expose({ name: 'endTime' })
   @IsString()
-  endTime: string;
+  endTime: mongoose.Schema.Types.Date;
 
   @ApiProperty({
     description: 'OCR인증여부',
