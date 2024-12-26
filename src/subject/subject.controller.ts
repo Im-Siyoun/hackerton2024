@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Injectable, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Injectable,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import {
   ApiBody,
@@ -56,5 +64,15 @@ export class SubjectController {
   async getSubjects(): Promise<ResponseDto<Subject[]>> {
     const result = await this.subjectservice.findAll();
     return ResponseDto.success('inquiry_success', result);
+  }
+
+  @Delete('/:id')
+  @ApiOperation({ summary: '단일 과목 삭제 API' })
+  @ApiResponse({
+    type: ResponseDto<Subject>,
+  })
+  async DeleteSubject(@Param() id: string): Promise<any> {
+    const result = await this.subjectservice.deleteSubject(id);
+    return ResponseDto.success('delete_success', result);
   }
 }

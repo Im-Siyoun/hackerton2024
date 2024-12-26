@@ -73,6 +73,7 @@ export class WebrtcGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('message')
   handleMessage(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
     // 클라이언트가 속한 룸 찾기
+    console.log(data);
     let clientRoom: string;
     this.rooms.forEach((clients, room) => {
       if (clients.has(client.id)) {
