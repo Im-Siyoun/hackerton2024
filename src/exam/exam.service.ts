@@ -45,11 +45,11 @@ export class ExamService {
     return await this.ExamModel.findById(id).exec();
   }
 
-  async findOneBySubjectId(id: string): Promise<Exam> {
+  async findOneBySubjectId(id: string): Promise<Exam[]> {
     const subject = await this.subjectservice.findOne(id);
     if (!subject) {
       throw new NotFoundException('없는 과목 id입니다.');
     }
-    return await this.ExamModel.findOne({ subject: subject.subjectName });
+    return await this.ExamModel.find({ subject: subject.subjectName });
   }
 }
