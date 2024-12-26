@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC Video Chat</title>
+    <style>
+      #videos {
+        display: flex;
+        justify-content: center;
+      }
+      video {
+        width: 320px;
+        height: 240px;
+        margin: 10px;
+        border: 1px solid black;
+      }
+      #chatbox {
+        width: 320px;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="videos">
+      <video id="localVideo" autoplay muted></video>
+      <div id="remoteVideos"></div>
+    </div>
+    <div id="chatbox">
+      <textarea id="chatArea" rows="10" cols="30" readonly></textarea><br />
+      <input type="text" id="messageInput" /><button onclick="sendMessage()">
+        Send
+      </button>
+    </div>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+      const localVideo = document.getElementById('localVideo');
+      const remoteVideosDiv = document.getElementById('remoteVideos');
+      const chatArea = document.getElementById('chatArea');
+      const messageInput = document.getElementById('messageInput');
+      let localStream;
+      let peerConnections = {}; // Key: clientId, Value: { peerConnection: RTCPeerConnection, iceCandidatesQueue: RTCIceCandidate[] }
+      let pendingCandidates = {};
+      let room = 'testRoom';
+
+      const socket = io('http://10.147.18.167:3000', {
+        transports: ['websocket'],
+        upgrade: false,
+      });
+
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          socket.emit('joinRoom', { room: 'testRoom' });
+          // WebRTC 데이터 채널 생성
+          // MediaRecorder로 스트림 인코딩
+          mediaRecorder = new MediaRecorder(stream, {
+            mimeType: 'video/webm;codecs=vp8,opus',
+          });
+          console.log(mediaRecorder);
+          mediaRecorder.ondataavailable = (event) => {
+            console.log(event.data);
+            if (event.data.size > 0) {
+              // 청크 데이터를 서버로 전송
+              socket.emit('message', {
+                candidateId: 'asdf',
+                stream: event.data,
+              });
+            }
+          };
+          mediaRecorder.start(100);
+        });
+    </script>
+  </body>
+</html>
