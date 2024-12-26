@@ -57,6 +57,22 @@ export class WebrtcGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.to(data.room).emit('userJoined', { user: client.id });
   }
 
+  @SubscribeMessage('ToProfessor')
+  handleCVMessage(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+    let clientRoom: string;
+    this.rooms.forEach((clients, room) => {
+      if (clients.has(client.id)) {
+        clientRoom = room;
+      }
+    });
+    if (clientRoom) {
+      // 스트림 데이터를 룸의 다른 클라이언트들에게 브로드캐스트
+      this.server.to(clientRoom).emit('streamData', {
+        data: data,
+      });
+    }
+  }
+
   @SubscribeMessage('message')
   handleMessage(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
     // 클라이언트가 속한 룸 찾기
@@ -67,7 +83,7 @@ export class WebrtcGateway implements OnGatewayConnection, OnGatewayDisconnect {
         clientRoom = room;
       }
     });
-    console.log(clientRoom)
+    console.log(clientRoom);
 
     if (clientRoom) {
       // 스트림 데이터를 룸의 다른 클라이언트들에게 브로드캐스트

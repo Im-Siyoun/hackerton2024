@@ -9,7 +9,7 @@ from io import BytesIO
 import csv
 import time
 
-SERVER_URL = " https://2d8b-115-91-214-4.ngrok-free.app"
+SERVER_URL = "http://43.203.31.163:3000"
 
 # Socket.IO 클라이언트 생성
 sio = socketio.AsyncClient(
