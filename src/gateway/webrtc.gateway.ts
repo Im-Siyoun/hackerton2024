@@ -105,4 +105,18 @@ export class WebrtcGateway implements OnGatewayConnection, OnGatewayDisconnect {
       });
     }
   }
+
+  @SubscribeMessage('terminate')
+  handleTerminate(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+    let clientRoom: string;
+    this.rooms.forEach((clients, room) => {
+      if (clients.has(client.id)) {
+        clientRoom = room;
+      }
+    });
+
+    if (clientRoom) {
+      this.server.to(clientRoom).emit('terminate');
+    }
+  }
 }
