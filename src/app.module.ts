@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { ExamModule } from './exam/exam.module';
 import { WebrtcModule } from './gateway/webrtc.module';
 import { VideoModule } from './video/video.module';
+import { ResultModule } from './result/result.module';
+import { SubjectModule } from './subject/subject.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { VideoModule } from './video/video.module';
     ExamModule,
     WebrtcModule,
     VideoModule,
+    ResultModule,
+    SubjectModule,
   ],
 })
 export class AppModule {}
