@@ -16,7 +16,7 @@ export class ResultService {
   }
 
   async findAll(): Promise<Result[]> {
-    const Results = await this.ResultModel.find();
+    const Results = await this.ResultModel.find({}).sort({ candidateId: 1 });
 
     return Results;
   }
