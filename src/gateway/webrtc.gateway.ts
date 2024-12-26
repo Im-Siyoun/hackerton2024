@@ -10,9 +10,6 @@ import {
 import { Server, Socket } from 'socket.io';
 import { WebrtcService } from './webrtc.service';
 import { joinRoomDto } from './types/joinRoom.dto';
-import { MessageDto } from './types/message.dto';
-import { RTCSessionDescriptionDto } from './types/RTCSession.dto';
-import { CandidateDto } from './types/candidate.dto';
 
 @WebSocketGateway({
   cors: { origin: '*' },
@@ -67,7 +64,7 @@ export class WebrtcGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
     if (clientRoom) {
       // 스트림 데이터를 룸의 다른 클라이언트들에게 브로드캐스트
-      this.server.to(clientRoom).emit('streamData', {
+      this.server.to(clientRoom).emit('fromCV', {
         data: data,
       });
     }
@@ -76,14 +73,12 @@ export class WebrtcGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('message')
   handleMessage(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
     // 클라이언트가 속한 룸 찾기
-    console.log(data);
     let clientRoom: string;
     this.rooms.forEach((clients, room) => {
       if (clients.has(client.id)) {
         clientRoom = room;
       }
     });
-    console.log(clientRoom);
 
     if (clientRoom) {
       // 스트림 데이터를 룸의 다른 클라이언트들에게 브로드캐스트
