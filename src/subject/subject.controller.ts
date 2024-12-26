@@ -68,6 +68,11 @@ export class SubjectController {
 
   @Delete('/:id')
   @ApiOperation({ summary: '단일 과목 삭제 API' })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: '과목 id',
+  })
   @ApiResponse({
     type: ResponseDto<Subject>,
   })
