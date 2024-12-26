@@ -7,6 +7,12 @@ export class User {
     type: String,
     required: true,
   })
+  name: string;
+
+  @Prop({
+    type: String,
+    required: true,
+  })
   @ApiProperty({
     description: '아이디',
   })

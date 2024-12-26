@@ -4,6 +4,14 @@ import { IsString } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
+    example: '김도완',
+    description: '사용자의 이름입니다.',
+  })
+  @Expose({ name: 'name' })
+  @IsString()
+  name: string;
+
+  @ApiProperty({
     example: 'rlatldbs',
     description: '사용자의 아이디입니다.',
   })
