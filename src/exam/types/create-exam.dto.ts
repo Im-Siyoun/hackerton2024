@@ -24,14 +24,12 @@ export class CreateExamDto {
     description: '시험시작시간',
   })
   @Expose({ name: 'startTime' })
-  @IsString()
   startTime: mongoose.Schema.Types.Date;
 
   @ApiProperty({
     description: '시험끝시간',
   })
   @Expose({ name: 'endTime' })
-  @IsString()
   endTime: mongoose.Schema.Types.Date;
 
   @ApiProperty({
