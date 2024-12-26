@@ -1,6 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import mongoose from 'mongoose';
 
 @Schema({ timestamps: true, versionKey: false })
 export class Exam {
@@ -17,6 +16,53 @@ export class Exam {
   @Prop({
     type: String,
     required: true,
+  })
+  @ApiProperty({
+    description: '시험명',
+    example: '문제해결을위한글쓰기와발표4분반',
+  })
+  examName: string;
+
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  @ApiProperty({
+    description: '시험시작시간',
+  })
+  startTime: Date;
+
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  @ApiProperty({
+    description: '시험끝시간',
+  })
+  endTime: Date;
+
+  @Prop({
+    type: Boolean,
+    required: true,
+  })
+  @ApiProperty({
+    description: 'OCR인증여부',
+  })
+  OCR: boolean;
+
+  @Prop({
+    type: Boolean,
+    required: true,
+    default: false,
+  })
+  @ApiProperty({
+    description: '시험완료여부',
+  })
+  complete: boolean;
+
+  @Prop({
+    type: String,
+    required: true,
     unique: true,
   })
   @ApiProperty({
@@ -24,16 +70,6 @@ export class Exam {
     example: 'awer4g1nuvf',
   })
   roomId: string;
-
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Candidates',
-  })
-  @ApiProperty({
-    description: '응시자들의 고유 _id 목록',
-    type: [String],
-  })
-  Candidates: mongoose.Schema.Types.ObjectId[];
 }
 
 export type ExamDocument = Exam & Document;

@@ -72,7 +72,7 @@
 
           video.addEventListener('play', function () {
             // 일정 간격으로 프레임을 전송 (1초에 1번)
-            const interval = 3000; // 1초에 한 번 전송
+            const interval = 1000; // 1초에 한 번 전송
             setInterval(function() {
               context.drawImage(video, 0, 0, canvas.width, canvas.height);
               canvas.toBlob(function (blob) {

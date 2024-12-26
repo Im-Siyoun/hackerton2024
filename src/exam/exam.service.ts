@@ -26,23 +26,10 @@ export class ExamService {
   async createExam(data: CreateExamDto): Promise<Exam> {
     const roomId = this.generateRandomString(8); // 랜덤으로 8자리 문자열 생성
     const ExamData = {
-      subject: data.subject,
+      ...data,
       roomId: roomId,
-      Candidates: [],
     };
-    await Promise.all(
-      data.Candidates.map(async (candidate) => {
-        const result = await this.candidateservice.createCandidate({
-          examId: roomId,
-          password: this.generateRandomString(8), // 랜덤으로 8자리 문자열 생성
-          studentId: candidate,
-        });
-        ExamData.Candidates.push(result._id);
-      }),
-    );
-    console.log(ExamData);
     const Exam = await this.ExamModel.create(ExamData);
-    console.log(Exam);
     return Exam;
   }
 

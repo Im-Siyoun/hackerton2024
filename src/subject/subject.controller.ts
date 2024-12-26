@@ -76,7 +76,7 @@ export class SubjectController {
   @ApiResponse({
     type: ResponseDto<Subject>,
   })
-  async DeleteSubject(@Param() id: string): Promise<any> {
+  async DeleteSubject(@Param('id') id: string): Promise<any> {
     const result = await this.subjectservice.deleteSubject(id);
     return ResponseDto.success('delete_success', result);
   }
