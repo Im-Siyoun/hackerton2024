@@ -10,7 +10,11 @@ export class ResultService {
   ) {}
 
   async createResult(data: CreateResultDto): Promise<Result> {
-    const Result = await this.ResultModel.create(data);
+    const Result = await this.ResultModel.findOneAndUpdate(
+      { candidateId: data.candidateId },
+      data,
+      { upsert: true },
+    );
 
     return Result;
   }
